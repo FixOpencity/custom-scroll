@@ -1,0 +1,15 @@
+{
+  "name": "custom-scroll",
+  "version": "1.0.0",
+  "description": "",
+  "main": "customScroll.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "<eugene.ruzanov@yandex.ru>",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.11.1",
+    "gulp": "^3.9.1"
+  }
+}

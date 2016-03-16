@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Custom Scroll</title>
+    <style>
+        body { -webkit-user-drag: none; }
+
+        .container1, .container2 {
+            margin: 20px 0;
+            height: 200px;
+            overflow-y: hidden;
+            overflow-x: scroll;
+        }
+
+        .container__items {
+            display: block;
+            float: left;
+            width: 500px;
+            height: 200px;
+            background-position: center;
+            background-size: cover;
+            opacity: .5;
+        }
+    </style>
+    <link rel="stylesheet" href="customScroll.css">
+</head>
+<body>
+<div class="container1">
+    <div class="container1__content">
+        <div class="container__items" style="background-image: url( img/black-and-gray-bedroom.jpg )"></div>
+        <div class="container__items" style="background-image: url( img/trapezoid-table.jpg )"></div>
+        <div class="container__items" style="background-image: url( img/dordoni-chairs.jpg )"></div>
+        <!--<div class="container__items" style="background-image: url( img/living-room-texture-ideas.jpg )"></div>-->
+        <!--<div class="container__items" style="background-image: url( img/black-and-gray-bedroom.jpg )"></div>-->
+        <!--<div class="container__items" style="background-image: url( img/trapezoid-table.jpg )"></div>-->
+        <!--<div class="container__items" style="background-image: url( img/dordoni-chairs.jpg )"></div>-->
+        <!--<div class="container__items" style="background-image: url( img/living-room-texture-ideas.jpg )"></div>-->
+        <!--<div class="container__items" style="background-image: url( img/black-and-gray-bedroom.jpg )"></div>-->
+        <!--<div class="container__items" style="background-image: url( img/trapezoid-table.jpg )"></div>-->
+        <!--<div class="container__items" style="background-image: url( img/dordoni-chairs.jpg )"></div>-->
+        <!--<div class="container__items" style="background-image: url( img/living-room-texture-ideas.jpg )"></div>-->
+    </div>
+</div>
+
+<div class="container2">
+    <div class="container2__content">
+        <div class="container__items" style="background-image: url( img/black-and-gray-bedroom.jpg )"></div>
+        <div class="container__items" style="background-image: url( img/trapezoid-table.jpg )"></div>
+        <div class="container__items" style="background-image: url( img/black-and-gray-bedroom.jpg )"></div>
+        <div class="container__items" style="background-image: url( img/trapezoid-table.jpg )"></div>
+        <div class="container__items" style="background-image: url( img/dordoni-chairs.jpg )"></div>
+        <div class="container__items" style="background-image: url( img/living-room-texture-ideas.jpg )"></div>
+    </div>
+</div>
+
+<script>
+    window.onload = function () {
+        function setWidth ( wrapper ) {
+            var items = Array.from( wrapper.querySelectorAll( '.container__items' ) );
+            var w = items.reduce( function ( a, b ) { return a + b.getBoundingClientRect().width; }, 0 );
+            wrapper.style.width = w + 'px';
+        }
+
+        setWidth( document.querySelector( '.container1__content' ) );
+        setWidth( document.querySelector( '.container2__content' ) );
+
+        window.cs1 = new CustomScroll( '.container1' );
+        window.cs2 = new CustomScroll( '.container2' );
+        
+        window.update2 = function () {
+
+            Array
+            .from( cs2.holder.querySelectorAll( '.container__items' ) )
+            .forEach( function ( el, i ) {
+                if ( i !== 0 && i !== 1 ) el.parentNode.removeChild( el );
+//                if ( i % 2 ) el.parentNode.removeChild( el );
+            } );
+
+            cs2.update( {
+                before : function ( container ) {
+                    console.log( 'beforeUpdate:', container );
+                    setWidth( container.firstElementChild );
+                }
+            } );
+        }
+    };
+</script>
+<script src="customScroll.js"></script>
+</body>
+</html>

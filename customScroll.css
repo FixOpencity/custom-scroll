@@ -1,0 +1,49 @@
+.custom-scroll {
+    position: relative;
+    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.custom-scroll:hover .custom-scroll__bar {
+    opacity: 1;
+}
+
+.custom-scroll__holder {
+    overflow: hidden;
+    transition-property: transform;
+    transition-duration: 0ms;
+    transition-timing-function: linear;
+}
+
+.custom-scroll__bar {
+    opacity: 0;
+    position: absolute;
+    bottom: 0;
+    height: 4px;
+    background-color: rgba( 0, 0, 0, .3 );
+    background-clip: content-box;
+    cursor: pointer;
+    border-top: 10px solid transparent;
+    transition-property: opacity, background-color, height;
+    transition-duration: .3s;
+}
+
+.custom-scroll__bar_move {
+    background-color: rgba( 0, 0, 0, .8 );
+    opacity: 1;
+}
+
+.custom-scroll__bar_active {
+    opacity: 1;
+    height: 14px;
+    border-top: none;
+    background-color: rgba( 0, 0, 0, .8 );
+}
+
+.custom-scroll__bar:hover {
+    background-color: rgba( 0, 0, 0, .8 );
+    transition-duration: .1s;
+    height: 14px;
+}
+
