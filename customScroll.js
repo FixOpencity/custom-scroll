@@ -133,7 +133,7 @@
      * @param params { before : function(){}, after : function(){} }
      */
     CustomScroll.prototype.update = function updateCustomScroll ( params ) {
-        if ( params.before && typeof params.before === 'function' ) {
+        if ( params && params.before && typeof params.before === 'function' ) {
             params.before( this.container );
         }
 
@@ -148,10 +148,12 @@
             this.scrollBar.style.width = this.container.getBoundingClientRect().width * this.ratio + 'px';
         }
 
-        if ( params.after && typeof params.after === 'function' ) {
+        if ( params && params.after && typeof params.after === 'function' ) {
             params.after( this.container );
         }
     };
+
+    // todo update scroll when resize viewport
 
     CustomScroll.prototype.destroy = function () { _destroy.call( this ); };
 
