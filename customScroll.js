@@ -159,12 +159,7 @@
     function CustomScroll ( selector ) {
         this.container = d.querySelector( selector );
         this.ratio = this.container.getBoundingClientRect().width / this.container.scrollWidth;
-
-        if ( this.ratio >= 1 || this.init ) {
-            return this;
-        } else {
-            _init.call( this );
-        }
+        if ( this.ratio < 1 && !this.init ) _init.call( this );
     }
 
     w.CustomScroll = CustomScroll;
