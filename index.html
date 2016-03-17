@@ -56,16 +56,18 @@
 
 <script>
     window.onload = function () {
+        var container1 = document.querySelector( '.container1' );
+
         function setWidth ( wrapper ) {
             var items = Array.from( wrapper.querySelectorAll( '.container__items' ) );
             var w = items.reduce( function ( a, b ) { return a + b.getBoundingClientRect().width; }, 0 );
             wrapper.style.width = w + 'px';
         }
 
-        setWidth( document.querySelector( '.container1__content' ) );
+        setWidth( container1.querySelector( '.container1__content' ) );
         setWidth( document.querySelector( '.container2__content' ) );
 
-        window.cs1 = new CustomScroll( '.container1' );
+        window.cs1 = new CustomScroll( container1 );
         window.cs2 = new CustomScroll( '.container2' );
         
         window.update2 = function () {

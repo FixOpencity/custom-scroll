@@ -155,9 +155,13 @@
 
     CustomScroll.prototype.destroy = function () { _destroy.call( this ); };
 
-    // init
-    function CustomScroll ( selector ) {
-        this.container = d.querySelector( selector );
+    /**
+     *
+     * @param container selector or DOM node
+     * @constructor
+     */
+    function CustomScroll ( container ) {
+        this.container = typeof container === 'string' ? d.querySelector( container ) : container;
         this.ratio = this.container.getBoundingClientRect().width / this.container.scrollWidth;
         if ( this.ratio < 1 && !this.init ) _init.call( this );
     }
