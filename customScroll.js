@@ -74,8 +74,6 @@
         e.preventDefault();
         this.startX = e.pageX;
         this.startOffset = _getTransformValues( this.holder )[4];
-
-        console.log( '_moveStart', this.container );
     }
     function _move ( e ) {
         var diff = e.pageX - this.startX;
@@ -85,8 +83,6 @@
         this.holder.style.transform = 'translate3D( ' + ( diff + this.startOffset ) + 'px, 0, 0 )';
         this.scrollBar.style.transform = 'translate3D( ' + ( Math.abs( diff + this.startOffset ) * this.ratio ) + 'px, 0, 0 )';
         this.scrollBar.classList.add( 'custom-scroll__bar_move' );
-
-        console.log( '_move', this.container );
     }
     function _moveEnd ( e ) {
         var values = _getTransformValues( this.holder );
@@ -101,8 +97,6 @@
             this.holder.style.transform = 'translate3D( ' + this.maxOffset + 'px, 0, 0 )';
             this.scrollBar.style.transform = 'translate3D( ' + Math.abs( this.maxOffset * this.ratio ) + 'px, 0, 0 )';
         }
-
-        console.log( '_moveEnd', this.container );
     }
 
     function _moveStartScrollBar ( e ) {
@@ -112,8 +106,6 @@
         this.startX = e.pageX;
         this.startOffset = _getTransformValues( this.scrollBar )[4];
         this.scrollBar.classList.add( 'custom-scroll__bar_active' );
-
-        console.log( '_moveStartScrollBar', this.container );
     }
     function _moveScrollBar ( e ) {
         var diff = e.pageX - this.startX;
@@ -123,23 +115,17 @@
 
         this.scrollBar.style.transform = 'translate3D( ' + ( diff + this.startOffset ) + 'px, 0, 0 )';
         this.holder.style.transform = 'translate3D( ' + ( - ( diff + this.startOffset ) / this.ratio ) + 'px, 0, 0 )';
-
-        console.log( '_moveScrollBar', this.container );
     }
     function _moveEndScrollBar ( e ) {
         e.stopPropagation();
         this.scrollBarActive = false;
         this.startX = 0;
         this.scrollBar.classList.remove( 'custom-scroll__bar_active' );
-
-        console.log( '_moveEndScrollBar', this.container );
     }
 
     function _transitionEnd ( e ) {
         e.stopPropagation();
         this.holder.style.transitionDuration = '0ms';
-
-        console.log( '_transitionEnd' );
     }
 
     /**
