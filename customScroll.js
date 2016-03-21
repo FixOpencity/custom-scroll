@@ -80,8 +80,8 @@
 
         if ( !this.startX || this.scrollBarActive ) return;
 
-        this.holder.style.transform = 'translate3D( ' + ( diff + this.startOffset ) + 'px, 0, 0 )';
-        this.scrollBar.style.transform = 'translate3D( ' + ( Math.abs( diff + this.startOffset ) * this.ratio ) + 'px, 0, 0 )';
+        this.holder.style.transform = 'translate3D( ' + ( diff + this.startOffset >> 0 ) + 'px, 0, 0 )';
+        this.scrollBar.style.transform = 'translate3D( ' + ( Math.abs( diff + this.startOffset ) * this.ratio >> 0 ) + 'px, 0, 0 )';
         this.scrollBar.classList.add( 'custom-scroll__bar_move' );
     }
     function _moveEnd ( e ) {
@@ -94,8 +94,8 @@
             this.scrollBar.style.transform = this.holder.style.transform = 'translate3D( 0, 0, 0 )';
         } else if ( values[4] < this.maxOffset ) {
             this.holder.style.transitionDuration = '.1s';
-            this.holder.style.transform = 'translate3D( ' + this.maxOffset + 'px, 0, 0 )';
-            this.scrollBar.style.transform = 'translate3D( ' + Math.abs( this.maxOffset * this.ratio ) + 'px, 0, 0 )';
+            this.holder.style.transform = 'translate3D( ' + ( this.maxOffset >> 0 ) + 'px, 0, 0 )';
+            this.scrollBar.style.transform = 'translate3D( ' + Math.abs( this.maxOffset * this.ratio >> 0 ) + 'px, 0, 0 )';
         }
     }
 
@@ -113,8 +113,8 @@
 
         if ( !this.startX || !this.scrollBarActive ) return;
 
-        this.scrollBar.style.transform = 'translate3D( ' + ( diff + this.startOffset ) + 'px, 0, 0 )';
-        this.holder.style.transform = 'translate3D( ' + ( - ( diff + this.startOffset ) / this.ratio ) + 'px, 0, 0 )';
+        this.scrollBar.style.transform = 'translate3D( ' + ( diff + this.startOffset >> 0 ) + 'px, 0, 0 )';
+        this.holder.style.transform = 'translate3D( ' + ( - ( diff + this.startOffset ) / this.ratio >> 0 ) + 'px, 0, 0 )';
     }
     function _moveEndScrollBar ( e ) {
         e.stopPropagation();
