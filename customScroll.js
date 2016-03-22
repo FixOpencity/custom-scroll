@@ -14,6 +14,18 @@
         }
         return [ 0, 0, 0, 0, 0, 0 ];
     }
+    function _normalize () {
+        var values = _getTransformValues( this.holder );
+
+        if ( values[4] > 0 ) {
+            this.holder.style.transitionDuration = '.1s';
+            this.scrollBar.style.transform = this.holder.style.transform = 'translate3D( 0, 0, 0 )';
+        } else if ( values[4] < this.maxOffset ) {
+            this.holder.style.transitionDuration = '.1s';
+            this.holder.style.transform = 'translate3D( ' + ( this.maxOffset >> 0 ) + 'px, 0, 0 )';
+            this.scrollBar.style.transform = 'translate3D( ' + Math.abs( this.maxOffset * this.ratio >> 0 ) + 'px, 0, 0 )';
+        }
+    }
     function _init () {
         this.scrollBar = _scrollBar.cloneNode();
         this.holder = this.container.firstElementChild;
@@ -37,13 +49,7 @@
         };
 
         this.scrollBar.addEventListener( EVENT_START_MOVE, this.handlers._moveStartScrollBar );
-        d.addEventListener( EVENT_MOVE, this.handlers._moveScrollBar );
-        d.addEventListener( EVENT_END_MOVE, this.handlers._moveEndScrollBar );
-
         this.container.addEventListener( EVENT_START_MOVE, this.handlers._moveStart );
-        this.container.addEventListener( EVENT_MOVE, this.handlers._move );
-        d.addEventListener( EVENT_END_MOVE, this.handlers._moveEnd );
-
         this.container.addEventListener( 'transitionend', this.handlers._transitionEnd );
 
         this.init = true;
@@ -57,13 +63,7 @@
 
         this.scrollBar.parentNode.removeChild( this.scrollBar );
 
-        d.removeEventListener( EVENT_MOVE, this.handlers._moveScrollBar );
-        d.removeEventListener( EVENT_END_MOVE, this.handlers._moveEndScrollBar );
-
         this.container.removeEventListener( EVENT_START_MOVE, this.handlers._moveStart );
-        this.container.removeEventListener( EVENT_MOVE, this.handlers._move );
-        d.removeEventListener( EVENT_END_MOVE, this.handlers._moveEnd );
-
         this.container.removeEventListener( 'transitionend', this.handlers._transitionEnd );
 
         this.init = false;
@@ -71,56 +71,50 @@
 
     // hadlers
     function _moveStart ( e ) {
-        e.preventDefault();
+        e.preventDefault(); // fix for chrome DnD
+        if ( this.scrollBarActive ) return;
         this.startX = e.pageX;
         this.startOffset = _getTransformValues( this.holder )[4];
+        d.addEventListener( EVENT_MOVE, this.handlers._move );
+        d.addEventListener( EVENT_END_MOVE, this.handlers._moveEnd );
     }
     function _move ( e ) {
         var diff = e.pageX - this.startX;
-
-        if ( !this.startX || this.scrollBarActive ) return;
-
+        if ( !this.startX ) return;
         this.holder.style.transform = 'translate3D( ' + ( diff + this.startOffset >> 0 ) + 'px, 0, 0 )';
         this.scrollBar.style.transform = 'translate3D( ' + ( Math.abs( diff + this.startOffset ) * this.ratio >> 0 ) + 'px, 0, 0 )';
         this.scrollBar.classList.add( 'custom-scroll__bar_move' );
     }
     function _moveEnd ( e ) {
-        var values = _getTransformValues( this.holder );
         this.startX = 0;
         this.scrollBar.classList.remove( 'custom-scroll__bar_move' );
-
-        if ( values[4] > 0 ) {
-            this.holder.style.transitionDuration = '.1s';
-            this.scrollBar.style.transform = this.holder.style.transform = 'translate3D( 0, 0, 0 )';
-        } else if ( values[4] < this.maxOffset ) {
-            this.holder.style.transitionDuration = '.1s';
-            this.holder.style.transform = 'translate3D( ' + ( this.maxOffset >> 0 ) + 'px, 0, 0 )';
-            this.scrollBar.style.transform = 'translate3D( ' + Math.abs( this.maxOffset * this.ratio >> 0 ) + 'px, 0, 0 )';
-        }
+        _normalize.call( this );
+        d.removeEventListener( EVENT_MOVE, this.handlers._move );
+        d.removeEventListener( EVENT_END_MOVE, this.handlers._moveEnd );
     }
 
     function _moveStartScrollBar ( e ) {
-        e.stopPropagation();
-        e.preventDefault();
+        e.preventDefault(); // fix for chrome DnD
         this.scrollBarActive = true;
         this.startX = e.pageX;
         this.startOffset = _getTransformValues( this.scrollBar )[4];
         this.scrollBar.classList.add( 'custom-scroll__bar_active' );
+        d.addEventListener( EVENT_MOVE, this.handlers._moveScrollBar );
+        d.addEventListener( EVENT_END_MOVE, this.handlers._moveEndScrollBar );
     }
     function _moveScrollBar ( e ) {
         var diff = e.pageX - this.startX;
-        e.stopPropagation();
-
-        if ( !this.startX || !this.scrollBarActive ) return;
-
+        if ( !this.startX ) return;
         this.scrollBar.style.transform = 'translate3D( ' + ( diff + this.startOffset >> 0 ) + 'px, 0, 0 )';
         this.holder.style.transform = 'translate3D( ' + ( - ( diff + this.startOffset ) / this.ratio >> 0 ) + 'px, 0, 0 )';
     }
-    function _moveEndScrollBar ( e ) {
-        e.stopPropagation();
+    function _moveEndScrollBar () {
         this.scrollBarActive = false;
         this.startX = 0;
         this.scrollBar.classList.remove( 'custom-scroll__bar_active' );
+        _normalize.call( this );
+        d.removeEventListener( EVENT_MOVE, this.handlers._moveScrollBar );
+        d.removeEventListener( EVENT_END_MOVE, this.handlers._moveEndScrollBar );
     }
 
     function _transitionEnd ( e ) {
