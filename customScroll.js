@@ -79,10 +79,17 @@
         d.addEventListener( EVENT_END_MOVE, this.handlers._moveEnd );
     }
     function _move ( e ) {
-        var diff = e.pageX - this.startX;
+        var diff = e.pageX - this.startX, transform, transformScrollBar;
         if ( !this.startX ) return;
-        this.holder.style.transform = 'translate3D( ' + ( diff + this.startOffset >> 0 ) + 'px, 0, 0 )';
-        this.scrollBar.style.transform = 'translate3D( ' + ( Math.abs( diff + this.startOffset ) * this.ratio >> 0 ) + 'px, 0, 0 )';
+
+        transform = diff + this.startOffset >> 0;
+        transform = transform > 0 ? 0 : transform;
+        transform = transform < this.maxOffset ? this.maxOffset : transform;
+
+        transformScrollBar = Math.abs( transform ) * this.ratio;
+
+        this.holder.style.transform = 'translate3D( ' + transform + 'px, 0, 0 )';
+        this.scrollBar.style.transform = 'translate3D( ' + transformScrollBar + 'px, 0, 0 )';
         this.scrollBar.classList.add( 'custom-scroll__bar_move' );
     }
     function _moveEnd ( e ) {
@@ -103,10 +110,20 @@
         d.addEventListener( EVENT_END_MOVE, this.handlers._moveEndScrollBar );
     }
     function _moveScrollBar ( e ) {
-        var diff = e.pageX - this.startX;
+        var diff = e.pageX - this.startX,
+            maxOffsetScroll = Math.abs( this.maxOffset * this.ratio ),
+            transform,
+            transformHolder;
         if ( !this.startX ) return;
-        this.scrollBar.style.transform = 'translate3D( ' + ( diff + this.startOffset >> 0 ) + 'px, 0, 0 )';
-        this.holder.style.transform = 'translate3D( ' + ( - ( diff + this.startOffset ) / this.ratio >> 0 ) + 'px, 0, 0 )';
+
+        transform = diff + this.startOffset >> 0;
+        transform = transform < 0 ? 0 : transform;
+        transform = transform > maxOffsetScroll ? maxOffsetScroll : transform;
+
+        transformHolder = - ( transform ) / this.ratio >> 0;
+
+        this.scrollBar.style.transform = 'translate3D( ' + transform + 'px, 0, 0 )';
+        this.holder.style.transform = 'translate3D( ' + transformHolder + 'px, 0, 0 )';
     }
     function _moveEndScrollBar () {
         this.scrollBarActive = false;
