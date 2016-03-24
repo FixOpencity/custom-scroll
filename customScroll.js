@@ -152,9 +152,9 @@
 
         if ( this.ratio >= 1 && this.init ) {
             _destroy.call( this );
-        } else if ( !this.init ) {
+        } else if ( this.ratio < 1 && !this.init ) {
             _init.call( this );
-        } else {
+        } else if ( this.init ) {
             this.maxOffset = this.container.getBoundingClientRect().width - this.holder.getBoundingClientRect().width;
             this.scrollBar.style.width = this.container.getBoundingClientRect().width * this.ratio + 'px';
         }
