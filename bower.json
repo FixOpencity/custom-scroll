@@ -1,17 +1,18 @@
 {
   "name": "custom-scroll",
-  "description": "",
+  "description": "ui, custom scroll",
   "main": "customScroll.js",
   "authors": [
-    "Eugene Ruzanov <eugene.ruzanov@yandex.ru>"
+    "<eugene.ruzanov@yandex.ru>"
   ],
   "license": "ISC",
   "keywords": [
+    "ui",
+    "custom",
     "scroll"
   ],
   "moduleType": [],
-  "homepage": "",
-  "private": true,
+  "homepage": "https://github.com/FixOpencity/custom-scroll",
   "ignore": [
     "**/.*",
     "node_modules",
