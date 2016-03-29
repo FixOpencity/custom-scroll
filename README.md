@@ -1,4 +1,4 @@
-# custom-scroll
+# fix-rc-custom-scroll
 
 var cs = CustomScroll( CSSselector | DOMelement  )
 
